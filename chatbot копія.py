@@ -1,7 +1,13 @@
 import json
 import random
 import nltk
+import tkinter as tk
+from tkinter import scrolledtext
 from nltk.stem import WordNetLemmatizer
+
+
+nltk.download('punkt')
+nltk.download('wordnet')
 
 lemmatizer = WordNetLemmatizer()
 
@@ -43,10 +49,27 @@ def get_response(tag):
             return random.choice(intent["responses"])
     return "Sorry, I don't understand."
 
-print("Bot: Hi! Type 'quit' to exit.")
-while True:
-    msg = input("You: ")
-    if msg.lower() == "quit":
-        break
-    tag = predict_class(msg)
-    print("Bot:", get_response(tag))
+
+def send_message():
+    user_input = entry.get()
+    chat_log.insert(tk.END, "You: " + user_input + "\n")
+    entry.delete(0, tk.END)
+
+    tag = predict_class(user_input)
+    response = get_response(tag)
+    chat_log.insert(tk.END, "Bot: " + response + "\n")
+
+root = tk.Tk()
+root.title("Chatbot (NLTK)")
+
+chat_log = scrolledtext.ScrolledText(root, width=50, height=20, wrap=tk.WORD, font=("Helvetica", 12))
+chat_log.pack(padx=10, pady=10)
+
+entry = tk.Entry(root, width=40, font=("Helvetica", 12))
+entry.pack(padx=10, pady=5)
+entry.bind("<Return>", lambda event: send_message())
+
+send_btn = tk.Button(root, text="Send", command=send_message, font=("Helvetica", 12))
+send_btn.pack(pady=5)
+
+root.mainloop()
