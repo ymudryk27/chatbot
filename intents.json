@@ -2,18 +2,134 @@
   "intents": [
     {
       "tag": "greeting",
-      "patterns": ["Hi", "Hello", "Hey", "Good morning"],
-      "responses": ["Hello!", "Hi there!", "Hey! How can I help?"]
+      "patterns": [
+        "Hello",
+        "Hi",
+        "Hey",
+        "Good morning",
+        "Good evening",
+        "Greetings",
+        "What's up",
+        "How's it going",
+        "Yo",
+        "Howdy",
+        "Hi there",
+        "Hey there"
+      ],
+      "responses": [
+        "Hi there!",
+        "Hello!",
+        "Hey!",
+        "Greetings!",
+        "Hi, how can I assist you?"
+      ]
     },
     {
       "tag": "goodbye",
-      "patterns": ["Bye", "See you", "Goodbye"],
-      "responses": ["Goodbye!", "Take care!", "See you soon!"]
+      "patterns": [
+        "Bye",
+        "See you",
+        "Goodbye",
+        "Catch you later",
+        "Talk to you soon",
+        "See ya",
+        "Take care",
+        "Later",
+        "I'm off",
+        "Peace"
+      ],
+      "responses": [
+        "Goodbye!",
+        "See you soon!",
+        "Take care!",
+        "Have a nice day!",
+        "Bye!"
+      ]
     },
     {
       "tag": "thanks",
-      "patterns": ["Thanks", "Thank you", "Thx"],
-      "responses": ["You're welcome!", "No problem!", "Anytime!"]
+      "patterns": [
+        "Thanks",
+        "Thank you",
+        "Thx",
+        "Appreciate it",
+        "Many thanks",
+        "Thanks a lot",
+        "Cheers",
+        "Much appreciated",
+        "Thanks very much"
+      ],
+      "responses": [
+        "You're welcome!",
+        "No problem!",
+        "Any time!",
+        "Glad to help!",
+        "Sure!"
+      ]
+    },
+    {
+      "tag": "name_query",
+      "patterns": [
+        "What is your name?",
+        "Who are you?",
+        "Tell me your name",
+        "Do you have a name?",
+        "What's your bot name?",
+        "Who am I chatting with?"
+      ],
+      "responses": [
+        "I'm your chatbot assistant.",
+        "You can call me ChatBot.",
+        "I'm a Python chatbot.",
+        "Just your friendly AI."
+      ]
+    },
+    {
+      "tag": "how_are_you",
+      "patterns": [
+        "How are you?",
+        "How are you doing?",
+        "What's up?",
+        "How's everything?",
+        "Are you okay?",
+        "How is it going?"
+      ],
+      "responses": [
+        "I'm doing great, thank you!",
+        "All good here. How can I help you?",
+        "Feeling chatty as always!",
+        "Fantastic. Let's chat!"
+      ]
+    },
+    {
+      "tag": "age",
+      "patterns": [
+        "How old are you?",
+        "What's your age?",
+        "When were you created?",
+        "Are you old?",
+        "How long have you been here?"
+      ],
+      "responses": [
+        "I’m quite new — born in code not long ago!",
+        "Age is just a number. I'm timeless 😉",
+        "I'm a bot, I don’t age like humans do!"
+      ]
+    },
+    {
+      "tag": "creator",
+      "patterns": [
+        "Who created you?",
+        "Who made you?",
+        "Who's your developer?",
+        "Who built you?",
+        "Where did you come from?"
+      ],
+      "responses": [
+        "I was created by Yaroslav Mudryk.",
+        "A Python enthusiast brought me to life!",
+        "I'm a student project, trained with love and code."
+      ]
     }
   ]
 }

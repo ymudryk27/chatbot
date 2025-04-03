@@ -1,75 +1,58 @@
 import json
 import random
 import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 import tkinter as tk
 from tkinter import scrolledtext
-from nltk.stem import WordNetLemmatizer
-
 
 nltk.download('punkt')
 nltk.download('wordnet')
 
 lemmatizer = WordNetLemmatizer()
 
-with open("intents.json", "r") as file:
+with open("intents.json") as file:
     intents = json.load(file)
 
-words = []
-classes = []
-documents = []
+def clean_text(text):
+    tokens = word_tokenize(text.lower())
+    return [lemmatizer.lemmatize(token) for token in tokens]
 
-for intent in intents["intents"]:
-    for pattern in intent["patterns"]:
-        tokens = nltk.word_tokenize(pattern)
-        words.extend(tokens)
-        documents.append((tokens, intent["tag"]))
-        if intent["tag"] not in classes:
-            classes.append(intent["tag"])
-
-words = [lemmatizer.lemmatize(w.lower()) for w in words if w.isalpha()]
-words = sorted(set(words))
-classes = sorted(set(classes))
-
-def clean_input(sentence):
-    tokens = nltk.word_tokenize(sentence)
-    tokens = [lemmatizer.lemmatize(w.lower()) for w in tokens if w.isalpha()]
-    return tokens
-
-def predict_class(sentence):
-    tokens = clean_input(sentence)
-    for doc in documents:
-        pattern_words = [lemmatizer.lemmatize(w.lower()) for w in doc[0] if w.isalpha()]
-        if set(tokens).intersection(pattern_words):
-            return doc[1]
-    return "unknown"
-
-def get_response(tag):
+def predict_class(text):
+    tokens = clean_text(text)
     for intent in intents["intents"]:
-        if intent["tag"] == tag:
-            return random.choice(intent["responses"])
-    return "Sorry, I don't understand."
+        for pattern in intent["patterns"]:
+            pattern_tokens = clean_text(pattern)
+            if all(word in tokens for word in pattern_tokens):
+                return intent
+    return None
 
+def get_response(user_input):
+    intent = predict_class(user_input)
+    if intent:
+        return random.choice(intent["responses"])
+    else:
+        return "I'm not sure I understand. Can you try again?"
 
 def send_message():
-    user_input = entry.get()
-    chat_log.insert(tk.END, "You: " + user_input + "\n")
+    msg = entry.get()
+    chat_log.config(state=tk.NORMAL)
+    chat_log.insert(tk.END, "You: " + msg + "\n")
+    response = get_response(msg)
+    chat_log.insert(tk.END, "Bot: " + response + "\n")
+    chat_log.config(state=tk.DISABLED)
     entry.delete(0, tk.END)
 
-    tag = predict_class(user_input)
-    response = get_response(tag)
-    chat_log.insert(tk.END, "Bot: " + response + "\n")
+window = tk.Tk()
+window.title("Chatbot (NLTK)")
 
-root = tk.Tk()
-root.title("Chatbot (NLTK)")
-
-chat_log = scrolledtext.ScrolledText(root, width=50, height=20, wrap=tk.WORD, font=("Helvetica", 12))
+chat_log = scrolledtext.ScrolledText(window, state='disabled', width=50, height=20, bg="black", fg="white")
 chat_log.pack(padx=10, pady=10)
 
-entry = tk.Entry(root, width=40, font=("Helvetica", 12))
+entry = tk.Entry(window, width=50)
 entry.pack(padx=10, pady=5)
-entry.bind("<Return>", lambda event: send_message())
 
-send_btn = tk.Button(root, text="Send", command=send_message, font=("Helvetica", 12))
-send_btn.pack(pady=5)
+send_button = tk.Button(window, text="Send", command=send_message)
+send_button.pack(pady=5)
 
-root.mainloop()
+window.mainloop()
